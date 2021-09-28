@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>logoアニメーション</title>
+    <script
+        src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="reset.css" />
+    <style>
+        .container {
+            width: 1080px;
+            margin: 120px auto;
+        }
+
+
+        .opening {
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            position: fixed;
+            background-color: #FFFDD4;
+            transition: all 0.5s ease-in-out;
+        }
+
+        .opening--out {
+            left: 100%;
+        }
+
+        .opening-logo {
+
+            opacity: 0;
+            transition: opacity 0.5s;
+
+
+        }
+
+        .opening-logo img {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: auto;
+
+        }
+
+        .opening-logo--visible {
+            opacity: 1;
+        }
+
+
+
+        .soushi_item {
+            font-size: 40px;
+            font-family: 'Shippori Mincho', serif;
+            color: #111111;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="opening">
+        <div class="opening-logo">
+            <img src="./logo2.svg" alt="" width="196" height="48">
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="soushi">
+            <p class="soushi_item soushi_item--1">春はあけぼの</p>
+            <p class="soushi_item soushi_item--2">やうやうしろくなりゆく山ぎは</p>
+            <p class="soushi_item soushi_item--3">すこしあかりて、紫だちたる雲のほそくたなびきたる</p>
+        </div>
+    </div>
+    <script>
+        (function() {
+            const timer = (time) => //タイマー
+                new Promise((resolve) => {
+                    setTimeout(() => {
+                        resolve();
+                    }, time);
+                })
+
+
+
+            async function openingAnimation() {
+                const opening = document.querySelector(".opening"),
+                    openingLogo = document.querySelector(".opening-logo"),
+                    openingTexts = Array.from(document.querySelectorAll(".opening-logo_text")), //noteの文字配列
+                    contentLoadWait = () => new Promise(resolve => {
+                        if (document.readyState === 'complete') {
+                            resolve();
+                        } else {
+                            window.onload = () => resolve();
+                        }
+                    });
+
+
+                await timer(1000);
+                /*ここで、ロゴをフェードインさせる。   */
+                openingLogo.classList.add("opening-logo--visible");
+                await timer(2000);
+                /*画像などのロードが全て完了するまで待機*/
+                await contentLoadWait();
+                /*ロゴをフェードアウト*/
+                openingLogo.classList.remove("opening-logo--visible");
+                await timer(1000);
+                /*背景をフェードアウトさせる*/
+                opening.classList.add("opening--out")
+            }
+
+
+            //枕草子のやつ
+            async function leadAnimation() {
+                const item1 = $('.soushi_item--1'),
+                    item2 = $('.soushi_item--2'),
+                    item3 = $('.soushi_item--3');
+                await timer(1000);
+                item1.fadeIn(1500);
+                await timer(1000);
+                item2.fadeIn(1500);
+                await timer(1000);
+                item3.fadeIn(1500);
+            }
+
+            (async function() {
+                await openingAnimation();
+                await timer(500);
+                await leadAnimation();
+            })();
+
+        })();
+    </script>
+</body>
+
+</html>
