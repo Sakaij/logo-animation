@@ -5,4 +5,4 @@
 
 Qittaで解説しています。
 
-[qittaの記事はこちらです。](https://note.com/s_code/n/nfdb6436b969f)
+[qittaの記事はこちらです。](https://qiita.com/aulait/items/035ecbc36a38851211e1)
